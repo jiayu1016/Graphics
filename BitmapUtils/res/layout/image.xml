@@ -16,16 +16,6 @@
             android:layout_height="match_parent"
             android:gravity="center"
             android:scaleType="fitCenter" />
-
-        <!--
-                 <com.sean.bitmaputils.BoundTextView
-                android:id="@+id/boundtext"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:background="@android:color/holo_blue_light" 
-                android:layout_marginLeft="100dp"
-                android:layout_marginTop="100dp"/>
-        -->
     </FrameLayout>
 
     <LinearLayout

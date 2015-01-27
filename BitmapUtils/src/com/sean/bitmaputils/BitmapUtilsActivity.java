@@ -12,15 +12,18 @@ import android.os.Message;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewStub;
+import android.view.animation.AlphaAnimation;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.FrameLayout;
 import android.widget.FrameLayout.LayoutParams;
 import android.widget.ImageView;
+import android.widget.TextView;
 
 public class BitmapUtilsActivity extends Activity {
 
 	private ImageView imageView;
-	private EditTextView textView;
+	private TextView textView;
+	private TextBoundView textBoundView;
 	private FrameLayout mainPanel;
 
 	private Bitmap bm;
@@ -39,7 +42,7 @@ public class BitmapUtilsActivity extends Activity {
 	protected void onCreate(Bundle savedInstanceState) {
 		// TODO Auto-generated method stub
 		super.onCreate(savedInstanceState);
-		setContentView(R.layout.image);		
+		setContentView(R.layout.image);
 
 		mainPanel = (FrameLayout) this.findViewById(R.id.mainpanel);
 		imageView = (ImageView) this.findViewById(R.id.imageview);
@@ -74,11 +77,12 @@ public class BitmapUtilsActivity extends Activity {
 			initText();
 			initStatusView();
 		}
-		
+
 	}
 
-	//一个现实输入法输入文字的窗口
+	// 一个现实输入法输入文字的窗口
 	private View mInputMethodView;
+
 	private void initStatusView() {
 		ViewStub stub = (ViewStub) findViewById(R.id.method_input);
 		mInputMethodView = stub.inflate();
@@ -96,7 +100,8 @@ public class BitmapUtilsActivity extends Activity {
 	private int textPosY;
 	private int boundWidth;
 	private int textSize;
-	//图片上初始化文字
+
+	// 图片上初始化文字
 	private void initText() {
 		String defaultText = "HAPPY NEW YEAR";
 		textPosX = 100;
@@ -109,13 +114,23 @@ public class BitmapUtilsActivity extends Activity {
 		boundWidth = (int) textWidth;
 		Rect textBound = new Rect(textPosX, textPosY, textPosX + boundWidth,
 				textPosY + textSize);
-		textView = new EditTextView(this, textBound, defaultText, paint);
-		textView.showBound(true);
-		FrameLayout.LayoutParams lp = new FrameLayout.LayoutParams(
+		textView = new TextView(this);
+		textView.setText(defaultText);
+		FrameLayout.LayoutParams lp1 = new FrameLayout.LayoutParams(
 				LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT);
-		textView.setLayoutParams(lp);
+		lp1.leftMargin = 100;
+		lp1.topMargin = 200;
+		textView.setLayoutParams(lp1);
+		textBoundView = new TextBoundView(this, textBound);
+		FrameLayout.LayoutParams lp2 = new FrameLayout.LayoutParams(
+				LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT);
+		textBoundView.setLayoutParams(lp2);
+		textBoundView.setAnimation(new AlphaAnimation(1.0f, 0f));
 		mainPanel.addView(textView);
-		mHandler.sendMessageDelayed(mHandler.obtainMessage(DRAW_TEXT_BOUND), 500);
+		mainPanel.addView(textBoundView);
+		
+		mHandler.sendMessageDelayed(mHandler.obtainMessage(DRAW_TEXT_BOUND),
+				500);
 		textView.setOnClickListener(new OnClickListener() {
 
 			@Override
@@ -128,7 +143,6 @@ public class BitmapUtilsActivity extends Activity {
 
 	private void drawTextBound(boolean drawBound) {
 		if (null != textView) {
-			textView.showBound(drawBound);
 			textView.invalidate();
 		}
 	}

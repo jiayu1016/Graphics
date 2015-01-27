@@ -13,35 +13,22 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.view.animation.AlphaAnimation;
 
-public class EditTextView extends View {
+public class TextBoundView extends View {
 
-	private Paint mPaint;
-	private String mText = "";
+	private static String TAG = "EditTextView";
 	private Rect textBound;
-	private AlphaAnimation mAnimation;
 
-	public EditTextView(Context context, Rect bound, String text, Paint paint) {
+	public TextBoundView(Context context, Rect bound) {
 		super(context);
 		// TODO Auto-generated constructor stub
 		textBound = bound;
-		mText = text;
-		mPaint = paint;
-		mAnimation = new AlphaAnimation(1, 0);
-	}
-
-	public void setText(String text) {
-		mText = text;
-	}
-
-	public void setPaint(Paint paint) {
-		mPaint = paint;
 	}
 
 	public void setBound(Rect r) {
 		textBound = r;
 	}
 
-	private boolean showBound = false;
+	private boolean showBound = true;
 
 	public void showBound(boolean show) {
 		showBound = show;
@@ -51,19 +38,13 @@ public class EditTextView extends View {
 	protected void onDraw(Canvas canvas) {
 		// TODO Auto-generated method stub
 		super.onDraw(canvas);
-		Log.d("aa", "---showBound = " + showBound);
-		if (null != mPaint && null != mText) {
-			canvas.drawText(mText, textBound.left, textBound.bottom, mPaint);
-		}
-		
+		Log.d(TAG, "---showBound = " + showBound);
 		if (showBound) {
 			Paint paint = new Paint(Paint.ANTI_ALIAS_FLAG);
-			// float textWidth = paint.measureText((String) getText());
 			paint.setStrokeWidth(5);
 			paint.setStyle(Style.FILL);
 			paint.setColor(Color.RED);
 			paint.setAlpha(120);
-
 			if (null != textBound) {
 				canvas.drawRect(textBound, paint);
 			}
@@ -72,8 +53,6 @@ public class EditTextView extends View {
 			PathEffect effect = new DashPathEffect(new float[] { 8, 8 }, 1);
 			paint.setPathEffect(effect);
 			if (null != textBound) {
-				mAnimation.setDuration(500);
-				mAnimation.start();
 				canvas.drawRect(textBound, paint);
 			}
 		}

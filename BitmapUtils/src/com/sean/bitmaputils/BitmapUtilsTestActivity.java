@@ -13,7 +13,7 @@ import android.widget.ListView;
 public class BitmapUtilsTestActivity extends Activity {
 
 	private ListView listview;
-	private String[] listStr = { "图片上任意移动文字" };
+	private String[] listStr = { "图片上写文字" };
 	private final String TAG = "bu";
 
 	@Override
